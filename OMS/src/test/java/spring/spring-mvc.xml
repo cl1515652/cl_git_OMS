@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop.xsd   
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd              
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- 激活@Controller模式 -->
+	<mvc:annotation-driven>
+		<!-- 消息转换器 -->
+		<mvc:message-converters register-defaults="true">
+			<bean id="jsonConverter"
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"><!-- 这里也可以自己定制class -->
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>  <!-- 避免IE出现下载JSON文件的情况 -->
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 需要更改 -->
+	<context:component-scan base-package="com.hiaward.cl.oms" />
+
+	<!-- 对mybatis自动生成代码的czhic -->
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hiaward.cl.oms" />
+	</bean>
+
+
+</beans>

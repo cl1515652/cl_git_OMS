@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Flow printer </title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+</head>
+
+<body>
+<div class="rightMain">
+ <div class="shangjiemianSI">
+    	<div class="biaotilan">
+        	<p>流水打印机状态信息</p>
+        </div>
+        <div class="chaxunbiaoge">
+        <table  cellpadding="0" cellspacing="0">
+        	<thead>
+        	<tr>
+            	<td height="40px">打印模块</td>
+                <td>纸状态</td>
+                <td>打印纸</td>
+                <td>墨粉</td>
+                <td>墨纸</td>
+                <td>提示灯</td>
+                <td>剩余张数</td>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+            	<td height="40px">正常</td>
+                <td>正常</td>
+                <td>正常</td>
+                <td>正常</td>
+                <td>正常</td>
+                <td>正常</td>
+                <td>200</td>
+            </tr>
+           </tbody>
+           <tfoot>
+           </tfoot>
+        </table>
+        </div>
+        <div class="jiankongchaxun">
+        	<input type="button " value="返回"  onclick="toAllEquipment()"/>
+        </div>
+    </div>
+
+ </div>     
+
+<script type="text/javascript">
+
+//跳转到修改页面
+var toAllEquipment= function(){
+	//alert(obj);
+	loadto("AllEquipment.html");
+}
+</script>
+
+</body>
+</html>

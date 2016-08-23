@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DeviceModule</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+<script>
+
+</script>
+
+
+
+</head>
+
+<body>
+<div class="rightMain">
+    <div class="shangjiemianSI">
+        <div class="biaotilan">
+             <p>全部设备查询</p>
+        </div>
+        <div class="yonghushuru">
+            <form>
+                <div>
+                    <p > 厂商: </p>
+                    <select id="manufacturer" >
+                    </select>
+                </div>
+
+                <div>
+                    <p > 设备类型: </p>
+                    <select id="deviceType">
+                    </select>
+                </div>
+
+                <div>
+                   <p > 设备编号: </p>
+                   <input type="text" id="termNum" name=""/>
+                </div>
+
+                <div>
+                   <p > IP地址: </p>
+                   <input type="text" id="ipAddr" name=""/>
+                </div>
+
+             </form>
+        </div>
+        <div class="yonghuanniu4">
+              <input id="query" type="button" value="查询"/>
+
+        </div>
+    </div>
+
+
+ <div class="shangjiemianSI">
+
+         <div class="biaotilan">
+              <p>查询结果</p>
+              <input type="button" id="add"  value="新增" />
+         </div>
+         <div  class="chaxunbiaoge">
+                <table class="chaxunbiaoge" id="term" cellpadding="0" cellspacing="0">
+
+
+
+                </table>
+            <div>
+</div>
+</body>
+
+<script type="text/javascript">
+$(function(){
+
+		var ajaxCall = function(url,data,call){
+		$.ajax({
+			type:"post",
+			url:url,
+			data: data,
+			scriptCharset: 'utf-8',
+        	success: function(rst){
+            	call(rst);
+        	},
+        	dataType: "json"
+	     });
+		};
+
+		//填充设备型号
+		var initManufacturer = function(rst){
+			var manufacturers = $.parseJSON(rst);
+
+			//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+			   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+			$("#manufacturer").empty();
+			$("#manufacturer").append($("<option value='#'>请选择</option>"));
+
+			for(var m in manufacturers){
+				//users[user].userId?users[user].userId:"";
+				var sdCode = manufacturers[m].sdCode?manufacturers[m].sdCode:"";
+				var zhName =  manufacturers[m].zhName?manufacturers[m].zhName:"";
+				var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+				$("#manufacturer").append(mtd);
+			}
+		}
+
+		//填充设备类型
+		var initdeviceType = function(rst){
+			var deviceTypes = $.parseJSON(rst);
+
+			//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+			   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+			$("#deviceType").empty();
+			$("#deviceType").append($("<option value='#'>请选择</option>"));
+
+			for(var d in deviceTypes){
+				//users[user].userId?users[user].userId:"";
+				var sdCode = deviceTypes[d].sdCode?deviceTypes[d].sdCode:"";
+				var zhName =  deviceTypes[d].zhName?deviceTypes[d].zhName:"";
+				var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+				$("#deviceType").append(mtd);
+			}
+		}
+
+		//查询设备
+		var initTerm = function(rst){
+			var terms = $.parseJSON(rst);
+
+			//清空加载页头
+			$("#term").empty();
+			$("#term").append($("<thead>		"+
+	        "    <tr>							"+
+	        "        <td height='40px'>序号</td>"+
+	        "        <td>设备编号</td>			"+
+	        "        <td>IP地址</td>			"+
+	        "        <td>交易柜员号</td>		"+
+	        "        <td>厂商</td>				"+
+	        "        <td>设备类型</td>			"+
+	        "        <td>操作</td>				"+
+	        "    </tr>							"+
+	        " </thead>							"));
+
+
+
+			//如果没有数据则显示暂无数据
+			if(terms.length == 0){
+				var ttd = $("<tbody>"+
+								"<tr>"+
+									"<td colspan='7'>暂无数据</td>"+
+								"</tr>"+
+							"</tbody>");
+				$("#term").append(ttd);
+			}
+
+			//加载数据
+			for(var t in terms){
+
+
+				//{\"deviceType_name\":\"取款机\",\"Manufacturer_name\":\"NCR\",\"deviceType\":1,\"ipAddr\":\"10.0.0.123\",\"manufacturer\":1,\"tellerNum\":\"123\",\"termId\":1,\"termIndex\":\"123\",\"termNum\":\"01\"
+				var termId = terms[t].termId?terms[t].termId:"";
+				var termNum = terms[t].termNum?terms[t].termNum:"";
+				var ipAddr = terms[t].ipAddr?terms[t].ipAddr:"";
+				var tellerNum = terms[t].tellerNum?terms[t].tellerNum:"";
+				var Manufacturer_name = terms[t].Manufacturer_name?terms[t].Manufacturer_name:"";
+				var DeviceType_name = terms[t].DeviceType_name?terms[t].DeviceType_name:"";
+
+				var ttd = $("<tbody>    												"+
+				           "         <tr>												"+
+				           "         <td height=\"40px\"><span>"+(parseInt(t)+1)+"</span></td>	"+
+				           "         <td><span>"+termNum+"</span></td>					"+
+				           "         <td><span>"+ipAddr+"</span></td>					"+
+				           "         <td><span>"+tellerNum+"</span></td>				"+
+				           "         <td><span>"+Manufacturer_name+"</span></td>				"+
+				           "         <td><span>"+DeviceType_name+"</span></td>				"+
+				           "         <td class=\"modify\" \">							"+
+				           "				<span onclick='update(\""+termId+"\")' >修改</span>	"+
+				           "				<span onclick='deleteById(\""+termId+"\")' >删除</span>	"+
+				           "		 </td>												"+
+				           "     </tr>													"+
+				           " </tbody>");
+				$("#term").append(ttd);
+			}
+
+		}
+
+
+		//getSysDict
+		ajaxCall("/OMS/getSysDict.cl",{dtType:"Manufacturer"},initManufacturer);
+		//ajaxCall("/OMS/getMain.cl","",initMain);
+		ajaxCall("/OMS/getSysDict.cl",{dtType:"deviceType"},initdeviceType);
+		//initTerm
+		ajaxCall("/OMS/queryTerm.cl","",initTerm);
+
+
+
+		//跳转到新增页面
+		$("#add").click(function(){
+			loadto("NewEquipment.html");
+		})
+
+		//查询按钮
+		$("#query").click(function(){
+			//获取查询条件
+			var termNum = $("#termNum").val();
+			var ipAddr = $("#ipAddr").val();
+			var deviceType = $("#deviceType").val();
+			var manufacturer = $("#manufacturer").val();
+
+			var queryStr ;
+
+			var data = {};
+
+			if(termNum != "" && termNum != undefined){
+				data.termNum = termNum;
+			}
+			if(ipAddr != "" && ipAddr != undefined){
+				data.ipAddr = ipAddr;
+			}
+			if(deviceType != "" && deviceType != "#" && deviceType != undefined){
+				data.deviceType = deviceType;
+			}
+			if(manufacturer != "" && manufacturer != "#" && manufacturer != undefined){
+				data.manufacturer = manufacturer;
+			}
+
+			//
+
+			//发送请求
+			ajaxCall("/OMS/queryTerm.cl",data,initTerm);
+		})
+
+
+
+
+});
+
+//跳转到修改页面
+var update= function(termId){
+	//alert(obj);
+	setTermId(termId);
+	loadto("updateEquipment.html");
+}
+
+
+var ajaxCall = function(url,data,call){
+	$.ajax({
+		type:"post",
+		url:url,
+		data: data,
+		scriptCharset: 'utf-8',
+    	success: function(rst){
+        	call(rst);
+    	},
+    	dataType: "json"
+     });
+	};
+
+//删除一条数据
+var deleteById=function(termId){
+
+	if(confirm("您确认删除该条数据么！")){
+		//发送删除请求
+		ajaxCall("/OMS/deleteById.cl",{'termId':termId},function(rst){
+			if(rst == "1"){
+				alert("删除成功");
+				//ajaxCall("/OMS/queryTerm.cl",data,initTerm);
+			}else{
+				alert("删除失败");
+			}
+
+			$('#query').trigger("click");
+
+		});
+	}
+
+}
+
+
+</script>
+</html>

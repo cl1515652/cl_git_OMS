@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+  <typeAlias alias="deviceFaultInfo" type="com.hiaward.cl.oms.entity.DeviceFaultInfo" />
+  <typeAlias alias="deviceInfo" type="com.hiaward.cl.oms.entity.DeviceInfo" />
+  <typeAlias alias="deviceModelIdcInfo" type="com.hiaward.cl.oms.entity.DeviceModelIdcInfo" />
+  <typeAlias alias="deviceTradeInfo" type="com.hiaward.cl.oms.entity.DeviceTradeInfo" />
+  <typeAlias alias="userInfo" type="com.hiaward.cl.oms.entity.UserInfo" />
+  <typeAlias alias="sysDict" type="com.hiaward.cl.oms.entity.SysDict" />
+  <typeAlias alias="Term" type="com.hiaward.cl.oms.entity.Term" />
+ </typeAliases>
+ <mappers>
+        <mapper resource="com/hiaward/cl/oms/mapper/DeviceFaultInfoMapper.xml"/>
+        <mapper resource="com/hiaward/cl/oms/mapper/DeviceInfoMapper.xml"/>
+        <mapper resource="com/hiaward/cl/oms/mapper/DeviceModelIdcInfoMapper.xml"/>
+        <mapper resource="com/hiaward/cl/oms/mapper/DeviceTradeInfoMapper.xml"/>
+        <mapper resource="com/hiaward/cl/oms/mapper/UserInfoMapper.xml"/>
+		<mapper resource="com/hiaward/cl/oms/mapper/SysDictMapper.xml"/>
+		<mapper resource="com/hiaward/cl/oms/mapper/TermMapper.xml"/>
+ </mappers>
+</configuration>

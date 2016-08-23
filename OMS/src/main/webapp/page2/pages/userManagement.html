@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>user management</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+
+</head>
+
+<body>
+
+<div class="rightMain">
+    <div class="jishulan" style="margin-top:14px;">
+            <div class="biaotilan">
+                <p>用户新增/修改</p>
+            </div>
+            <div class="changeUser">
+            	<form>
+                    <div>
+                       <p ><span>*</span> 用户名: </p>
+                        <input type="text" name="用户名"/><span>输入内容错误</span>
+                    </div>
+                	
+                   <div>
+                        <p><span>*</span> 密码: </p>
+                        <input type="text" name="密码"/><span>输入内容错误</span>
+                    </div>
+                	<div>
+                        <p><span>*</span> 姓名: </p>
+                        <input type="text" name="姓名"/><span>输入内容错误</span>
+                    </div>
+                	<div>
+                        <p><span>*</span> 手机号: </p>
+                        <input type="text" name="手机号"/><span>输入内容错误</span>
+                    </div>
+                    <div>
+                        <p ><span>*</span> 邮箱: </p>
+                        <input type="text" name="邮箱" /><p style="display:none;"><span>输入内容错误</span></p>
+                    </div>
+                
+                	<div class="zimokuai">
+                        <a ><span>*</span> 模块: </a>
+                        <input type="checkbox" value="系统管理" checked="checked" style="float:none"/>系统管理
+                         <input type="checkbox" value="监控管理员" checked="checked" style="float:none"/>监控管理员
+                       <input type="checkbox" value="报表管理员" checked="checked" style="float:none"/>报表管理员                              
+                    </div>
+			</form>
+            </div>
+         <div class="yonghuanniu2">
+                    <input type="button" value="提交"/>
+                    <input type="button" value="返回" onclick="window.location.href='UserModule.html'"/></div>   
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

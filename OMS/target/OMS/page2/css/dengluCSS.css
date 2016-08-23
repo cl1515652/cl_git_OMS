@@ -1,0 +1,36 @@
+﻿@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0;}
+html{ width:100%; height:100%;text-align:center; font-family:"微软雅黑";}
+.BG{ width:100%; height:750px; background:url(../images/BG.png) no-repeat; text-align:center; vertical-align:middle; float:left; overflow-x:hidden;}
+.dengluArea{ width:268px; height:300px; background-color:#FFF; text-align:center;  border:1px solid #e4e6e6;
+			 display:inline-block; margin-top:200px;}
+.wenzi1{ font-size:24px; font-weight:bold; margin-bottom:12px; margin-top:18px;}
+.wenzi2{ font-size:14px; font-family:Arial, Helvetica, sans-serif; }
+.wenzi3{  margin-top:20px;   border-bottom:1px solid #ccc; width:100%; position:relative; height:33px; }
+.wenzi3Position a{  color:#ccc;  height:32px; line-height:32px; cursor:pointer;font-size:14px; text-align:center; margin-right:15px; margin-left:15px; }
+.wenzi3Position a:hover{color:#666; border-bottom:1px solid #666;}
+.wenzi3Position a:active{color:#000; border-bottom:1px solid #000;}
+
+
+
+
+.inputBG{ width:200px; height:100px; background-color:#e4e3e1; margin:0 auto;margin-top:10px; border:1px solid #b9b9b9; text-align:center;}
+.inputBG input{font-size:12px; border:none; background-color:#e4e3e1; margin-top:12px;width:120px; height:30px;vertical-align:middle;}
+.inputBG img{ vertical-align:middle; _background:none; margin-top:5px;
+					_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/button_bg.png',sizingMethod='crop';)}
+.dengluanniu{ position:relative;
+				 }
+.dengluanniu input{ border:none; text-align:center; font-size:18px; color:#FFF; line-height:28px;width:74px; height:28px; background-color:#4ccaef; 
+					margin-top:15px; width:150px; height:28px;}
+
+.password { border-top:1px solid #ccc; margin-top:10px;}
+.shanginput password img{*background:none;/*For IE7 & IE6*/_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/button_bg.png',sizingMethod='crop');
+				  outline:none; cursor:pointer;}
+
+
+
+
+
+
+

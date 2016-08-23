@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>New equipment</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+</head>
+
+<body>
+<div class="rightMain">
+<div class="jishulan" style="margin-top:14px;">
+            <div class="biaotilan">
+                <p>设备修改</p>
+            </div>
+            <div class="yonghushuruThree">
+            	<form>
+            	<input type="hidden" id="termid" name="ID"/>
+                	<div>
+                       <p ><span>*</span> 终端编号: </p>
+                        <input type="text" id="termnum" name="终端编号"/><p><span id="termnum_1"></span></p>
+                    </div>
+                	<div>
+                        <p><span>*</span> IP地址: </p>
+                        <input type="text" id="ipaddr" name="IP地址"/><p><span id="ipaddr_1"></span></p>
+                    </div>
+                	<div>
+                        <p><span>*</span> 交易柜员号: </p>
+                        <input type="text" id="tellernum"  name="交易柜员号"/><p><span id="tellernum_1"></span></p>
+                    </div>
+                	<div>
+                        <p><span>*</span> 设备序列号: </p>
+                        <input type="text" id="termindex" name="设备序列号"/><p><span id="termindex_1"></span></p>
+                    </div>
+                    <div>
+                        <p ><span>*</span> 厂商: </p>
+                            <select id="manufacturer" name="厂商">
+                            </select><p><span id="manufacturer_1"></span></p>
+                    </div>
+                    <div>
+                        <p > <span>*</span>设备类型: </p>
+                        <select id="devicetype" name="设备状态">
+                        </select><p><span id="devicetype_1"></span></p>
+                    </div>
+                    </div>
+                	<div class="zimokuai1" id="zimokuai1" >
+                        <a ><span>*</span> 模块: </a>
+
+                    </div>
+                    <div class="yonghuanniu2" >
+                        <input type="button" id="submit" value="修改"/>
+                        <input type="button" id="back" onclick="#" value="返回"/>
+                   </div>
+                </form>
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+
+	var ajaxCall = function(url,data,call){
+	$.ajax({
+		type:"post",
+		url:url,
+		data: data,
+		scriptCharset: 'utf-8',
+    	success: function(rst){
+        	call(rst);
+    	},
+    	dataType: "json"
+     });
+	};
+
+	//填充设备型号
+	var initManufacturer = function(rst){
+		var manufacturers = $.parseJSON(rst);
+
+		//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+		   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+		$("#manufacturer").empty();
+		$("#manufacturer").append($("<option value='#'>请选择</option>"));
+
+		for(var m in manufacturers){
+			//users[user].userId?users[user].userId:"";
+			var sdCode = manufacturers[m].sdCode?manufacturers[m].sdCode:"";
+			var zhName =  manufacturers[m].zhName?manufacturers[m].zhName:"";
+			var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+			$("#manufacturer").append(mtd);
+		}
+	}
+
+
+	//填充设备类型
+	var initDeviceType = function(rst){
+		var deviceTypes = $.parseJSON(rst);
+
+		//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+		   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+		$("#devicetype").empty();
+		$("#devicetype").append($("<option value='#'>请选择</option>"));
+
+		for(var d in deviceTypes){
+			//users[user].userId?users[user].userId:"";
+			var sdCode = deviceTypes[d].sdCode?deviceTypes[d].sdCode:"";
+			var zhName =  deviceTypes[d].zhName?deviceTypes[d].zhName:"";
+			var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+			$("#devicetype").append(mtd);
+		}
+	}
+
+	//填充模块
+	var initModel = function(rst){
+		var deviceTypes = $.parseJSON(rst);
+		//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+
+		//
+		$("#zimokuai1").empty();
+		$("#zimokuai1").append($("<a ><span>*</span> 模块: </a>"));
+
+		for(var d in deviceTypes){
+			//users[user].userId?users[user].userId:"";
+			var sdCode = deviceTypes[d].sdCode?deviceTypes[d].sdCode:"";
+			var zhName =  deviceTypes[d].zhName?deviceTypes[d].zhName:"";
+			//var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+			var mtd = $("<input type='checkbox' name='module' value='"+sdCode+"'  /><span>"+zhName+"</span>");
+
+			$("#zimokuai1").append(mtd);
+		}
+	}
+
+	//填充信息
+	//"{\"devicetype\":1,\"ipaddr\":\"10.9.9.10\",
+	//	\"manufacturer\":1,\"tellernum\":\"320002\",
+	//\"termid\":2,\"termindex\":\"9X-1992\",\"termnum\":\"002\"}"
+	var initPage = function(rst){
+		var term = $.parseJSON(rst);
+		var termid = term.termid;
+		var termnum = term.termnum;
+		var ipaddr = term.ipaddr;
+		var tellernum = term.tellernum;
+		var termindex = term.termindex;
+		var devicetype = term.devicetype;
+		var manufacturer = term.manufacturer;
+
+		$("#termid").val(termid);
+		$("#termnum").val(termnum);
+		$("#ipaddr").val(ipaddr);
+		$("#tellernum").val(tellernum);
+		$("#termindex").val(termindex);
+		$("#devicetype").val(devicetype);
+		$("#manufacturer").val(manufacturer);
+
+		//alert(term);
+	}
+
+
+	//getSysDict
+	ajaxCall("/OMS/getSysDict.cl",{dtType:"Manufacturer"},initManufacturer);
+	//ajaxCall("/OMS/getMain.cl","",initMain);
+	ajaxCall("/OMS/getSysDict.cl",{dtType:"DeviceType"},initDeviceType);
+	//getSysDict
+	ajaxCall("/OMS/getSysDict.cl",{dtType:"Model"},initModel);
+	//加载页面
+	//ajaxCall("/OMS/getTermById.cl",{'termId':"5"},initPage);
+	ajaxCall("/OMS/getTermById.cl",{'termId':getTermId()},initPage);
+
+
+
+	//返回按钮
+	$("#back").click(function(){
+		loadto("DeviceModule.html");
+	});
+
+	//$("termnum_1").hide();
+	//$("ipaddr_1").hide();
+	//$("tellernum_1").hide();
+	//$("termindex_1").hide();
+	//$("devicetype_1").hide();
+	//$("manufacturer_1").hide();
+
+	//提交按钮
+	$("#submit").click(function(){
+
+		//初始化提示
+		$("#termnum_1").text("");
+		$("#ipaddr_1").text("");
+		$("#tellernum_1").text("");
+		$("#termindex_1").text("");
+		$("#manufacturer_1").text("");
+		$("#devicetype_1").text("");
+
+		//获取数据
+		var termnum = $("#termnum").val();
+		var ipaddr = $("#ipaddr").val();
+		var tellernum = $("#tellernum").val();
+		var termindex = $("#termindex").val();
+		var devicetype = $("#devicetype").val();
+		var manufacturer = $("#manufacturer").val();
+
+
+		var termid =  $("#termid").val();
+		//var termnum = $("#termnum").val();
+
+		var i = 0;
+		//校验数据
+		if(termnum == ""){
+			$("#termnum_1").text("终端编号不能为空");
+			i++;
+		}
+		if(ipaddr == ""){
+			$("#ipaddr_1").text("IP地址不能为空");
+			i++;
+		}
+
+		if(!isIP2(ipaddr)){
+			$("#ipaddr_1").text("IP地址错误请检查");
+			i++;
+		}
+
+		if(tellernum == ""){
+			$("#tellernum_1").text("交易柜员号不能为空");
+			i++;
+		}
+		if(termindex == ""){
+			$("#termindex_1").text("设备序列号不能为空");
+			i++;
+		}
+		if(manufacturer == "#"){
+			$("#manufacturer_1").text("请选择厂商");
+			i++;
+		}
+		if(devicetype == "#"){
+			$("#devicetype_1").text("请选择设备类型");
+			i++;
+		}
+
+		if(i>0){
+			return;
+		}
+
+
+		//发送请求
+		//组织数据
+		//{dtType:"Manufacturer"}
+		//termnum,ipaddr,tellernum,termindex,devicetype,manufacturer
+		var data = {'termid':termid,'termnum':termnum,'ipaddr':ipaddr,'tellernum':tellernum,'termindex':termindex,'devicetype':devicetype,'manufacturer':manufacturer};
+
+		ajaxCall("/OMS/updateTerm.cl",data,rst);
+
+	});
+
+
+	var rst = function(rst){
+		if(rst == 1){
+			alert("修改成功!");
+		}else{
+			alert("修改失败!");
+		}
+
+		loadto("DeviceModule.html");
+	}
+
+	//IPformat ((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))
+	function isIP2(ip)
+	{
+	    var re =  /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+	    return re.test(ip);
+	}
+
+
+});
+</script>
+</body>
+</html>

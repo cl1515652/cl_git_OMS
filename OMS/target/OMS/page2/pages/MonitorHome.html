@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Monitor home</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+</head>
+
+<body>
+<div class="rightMain">
+    <div class="jishulan" style="margin-top:14px;">
+            <div class="biaotilan">
+                <p>今日累计交易笔数</p>
+            </div>
+            <div class="numberTotal">
+                <table border="0"  cellspacing="30">
+                	<tr>
+                    	<td id="mun_8">0</td>
+                        <td id="mun_7">0</td>
+                        <td class="numberTotal1">,</td>
+                        <td id="mun_6">0</td>
+                        <td id="mun_5">0</td>
+                        <td id="mun_4">0</td>
+                        <td class="numberTotal1">,</td>
+                        <td id="mun_3">0</td>
+                        <td id="mun_2">0</td>
+                        <td id="mun_1">0</td>
+                    </tr>
+                </table>
+            </div>
+       
+    </div>
+    
+    <div class="jishulan merchion">    
+        <div class="shebeilan">
+            <div class="blue">
+                <p>正常设备</p>
+                <p class="taishu">
+                <font id="zcsb">3</font>
+                台</p>
+            </div>
+            <div class=" orange">
+                <p>异常设备</p>	
+                <p class="taishu" >
+                <font id="ycsb">3</font>
+                台</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	var initMain = function(rst){
+		
+		var jys = rst.jys;
+		var gzsb = rst.gzsb;
+		var zcsb = rst.zcsb;
+		
+		//jys = 12345+"";
+		
+		
+		$("#zcsb").text(zcsb);
+		$("#ycsb").text(gzsb);
+		
+		for(var i = 1 ; i<=jys.length ; i++){
+			$("#mun_"+i).text(jys[i-1]);
+		}
+		
+	}
+	
+	var ajaxCall = function(url,data,call){
+		$.ajax({
+			type:"post",
+			url:url,
+			data: data,
+			scriptCharset: 'utf-8',
+        	success: function(rst){
+            	call(rst);
+        	},
+        	dataType: "json"
+     });
+	};
+
+	ajaxCall("/OMS/getMain.cl","",initMain);
+</script>
+</body>
+</html>

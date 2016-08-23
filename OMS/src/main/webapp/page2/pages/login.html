@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/OMS/page2/css/dengluCSS.css">
+<title>运管登录</title>
+<script type="text/javascript" src="/OMS/page2/js/png.js" ></script>
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js" ></script>
+<script type="text/javascript" src="/OMS/js/func.js" ></script>
+<script type="text/javascript">
+	//window.onload=function(){
+	//	document.getElementById("login").onclick=function(){window.open("main.html","_self")
+	//	}
+	//}
+$(function(){
+	
+	 $("#login").click(function(){
+         var username = $("#username").val();
+         var password = $("#password").val();
+
+         if(username === "" || password === ""){
+             alert("用户名或者密码不能为空");
+         }else if(username.length > 20 || password.length > 20){
+             alert("用户名或者密码不能超过20位");
+         }else{
+             $.ajax({
+                 type: "POST",
+                 url: "login.cl",
+                 data: {"userId":username,"password":password},
+                 success: function(rst){
+
+                     	if("true" == rst.login){
+
+                     		console.log("登录成功！欢迎您"+username);
+                     		console.log(rst);
+                     		location.href = "toMain.cl";
+
+                     		
+                     		
+                     	}else{
+
+                     		console.log("用户名或密码错误");
+ 							alert("用户名或密码错误");
+                     		
+                     	}
+
+                 },
+                 dataType: "json"
+               });
+         }
+     });
+	
+})
+</script>
+</head>
+
+<body>
+<div>
+    <div class="BG">
+            <div class="dengluArea">
+                <P class="wenzi1">运管登录系统</p>
+                <P class="wenzi2">Carrier Landing system</p>
+                <div class="wenzi3">
+                    <div class="wenzi3Position">
+                        <a>用户登录</a>
+                    </div>
+            	</div>
+                <div class="inputBG">
+                	 
+                    <div class=" shanginput">
+                    	<img src="/OMS/page2/images/denglu.png"/>
+                        <input id="username" type="text" value="" onfocus="clearContent(this)"/>
+                    </div>
+                    
+                    <div class="shanginput password">
+                    	<img src="/OMS/page2/images/password.png">
+                        <input id="password" type="password" value=""  onfocus="clearContent(this)"/>
+                    </div>
+                    </div>
+                    <div class="dengluanniu">
+                        <input id="login" type="button" value="登录" id="login"/>
+                    </div>
+                </div>    
+           </div>         
+    </div>
+</div>
+</body>
+</html>

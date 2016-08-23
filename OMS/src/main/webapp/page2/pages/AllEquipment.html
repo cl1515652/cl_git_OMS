@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>All equipment</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+</head>
+
+<body>
+<div class="rightMain">
+    <div class="jishulan" style="margin-top:14px;">
+        <div class="biaotilan">
+             <p>全部设备查询</p>
+        </div>
+    	<div class="yonghushuru1">
+            <form>
+               <div>
+                    <a>设备状态: </a>
+                    <select name="设备状态" id="v_status">
+                    <option value="#">请选择</option>
+                    <option value="0">正常设备</option>
+                    <option value="1">异常设备</option>
+                    </select>
+                </div>
+                <div>
+                    <a > 设备类型: </a>
+                    <select name="设备状态" id="deviceType">
+                    </select>
+                </div>
+
+                    <div>
+                        <a > 厂商: </a>
+                        <select name="厂商" id="manufacturer">
+
+                        </select>
+
+                    </div>
+                    <div>
+                        <a >设备编号: </a>
+                        <input id="termNum" type="text" name="用户名"/>
+                    </div>
+                    <div>
+                       <a > IP地址: </a>
+                       <input id="ipAddr" type="text" name="用户名"/>
+                    </div>
+                </div>
+                   <div class="jiankongchaxun">
+                   <input type="button" id="query" value="查询"/>
+                <div>
+             </form>
+    	</div>
+	</div>
+</div>
+
+
+    <div class="jishulan twoTop">
+         <div class="biaotilan">
+              <p>查询结果</p>
+         </div>
+          <div class="chaxunbiaoge">
+                <table id="term"  cellpadding="0" cellspacing="0">
+
+                </table>
+        </div>
+    </div>
+
+<script type="text/javascript">
+$(function(){
+
+		var ajaxCall = function(url,data,call){
+		$.ajax({
+			type:"post",
+			url:url,
+			data: data,
+			scriptCharset: 'utf-8',
+        	success: function(rst){
+            	call(rst);
+        	},
+        	dataType: "json"
+	     });
+		};
+
+		//填充厂商
+		var initManufacturer = function(rst){
+			var manufacturers = $.parseJSON(rst);
+
+			//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+			   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+			$("#manufacturer").empty();
+			$("#manufacturer").append($("<option value='#'>请选择</option>"));
+
+			for(var m in manufacturers){
+				//users[user].userId?users[user].userId:"";
+				var sdCode = manufacturers[m].sdCode?manufacturers[m].sdCode:"";
+				var zhName =  manufacturers[m].zhName?manufacturers[m].zhName:"";
+				var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+				$("#manufacturer").append(mtd);
+			}
+		}
+
+		//填充设备类型
+		var initdeviceType = function(rst){
+			var deviceTypes = $.parseJSON(rst);
+
+			//[{\"dtType\":\"Manufacturer\",\"sdCode\":1,\"sdId\":1,\"zhName\":\"NCR\"},
+			   //{\"dtType\":\"Manufacturer\",\"sdCode\":2,\"sdId\":2,\"zhName\":\"OKI\"}]"
+
+			$("#deviceType").empty();
+			$("#deviceType").append($("<option value='#'>请选择</option>"));
+
+			for(var d in deviceTypes){
+				//users[user].userId?users[user].userId:"";
+				var sdCode = deviceTypes[d].sdCode?deviceTypes[d].sdCode:"";
+				var zhName =  deviceTypes[d].zhName?deviceTypes[d].zhName:"";
+				var mtd = $("<option value="+sdCode+">"+zhName+"</option>");
+				$("#deviceType").append(mtd);
+			}
+		}
+
+
+		//查询设备
+		var initPage = function(rst){
+			var terms = $.parseJSON(rst);
+
+			//清空加载页头
+			$("#term").empty();
+			$("#term").append($("<thead>		"+
+	        "    <tr>							"+
+	        "        <td height='40px'>序号</td>"+
+	        "        <td>设备编号</td>			"+
+	        "        <td>IP地址</td>			"+
+	        "        <td>厂商</td>				"+
+	        "        <td>设备类型</td>			"+
+	        "        <td>设备状态</td>			"+
+	        "        <td>设备详情</td>			"+
+	        "    </tr>							"+
+	        " </thead>							"));
+
+			//如果没有数据则显示暂无数据
+			if(terms.length == 0){
+				var ttd = $("<tbody>"+
+								"<tr>"+
+									"<td colspan='7'>暂无数据</td>"+
+								"</tr>"+
+							"</tbody>");
+				$("#term").append(ttd);
+			}
+
+
+
+
+
+			//加载数据
+			for(var t in terms){
+
+
+				//{\"deviceType_name\":\"取款机\",\"Manufacturer_name\":\"NCR\",\"deviceType\":1,\"ipAddr\":\"10.0.0.123\",\"manufacturer\":1,\"tellerNum\":\"123\",\"termId\":1,\"termIndex\":\"123\",\"termNum\":\"01\"
+				var termId = terms[t].termId?terms[t].termId:"";
+				var termNum = terms[t].termNum?terms[t].termNum:"";
+				var ipAddr = terms[t].ipAddr?terms[t].ipAddr:"";
+				var tellerNum = terms[t].tellerNum?terms[t].tellerNum:"";
+				var Manufacturer_name = terms[t].Manufacturer_name?terms[t].Manufacturer_name:"";
+				var DeviceType_name = terms[t].DeviceType_name?terms[t].DeviceType_name:"";
+				var v_status = terms[t].v_status?terms[t].v_status:"";
+
+				if(v_status == "0"){
+					v_status = "<span style='color:green;'>正常</span>"
+				}else{
+					v_status = "<span style='color:red;'>异常</span>"
+
+				}
+
+				var ttd = $("<tbody>    												"+
+				           "         <tr>												"+
+				           "         <td height=\"40px\"><span>"+(parseInt(t)+1)+"</span></td>	"+
+				           "         <td><span>"+termNum+"</span></td>					"+
+				           "         <td><span>"+ipAddr+"</span></td>					"+
+				           "         <td><span>"+Manufacturer_name+"</span></td>		"+
+				           "         <td><span>"+DeviceType_name+"</span></td>			"+
+				           "         <td>"+v_status+"</td>								"+
+				           "		 <td class='modify' onclick='flowPrinter()' >详情</td>			 "+
+				           "     </tr>													"+
+				           " </tbody>");
+				$("#term").append(ttd);
+
+			}
+
+		}
+
+
+
+
+
+		//getSysDict
+		ajaxCall("/OMS/getSysDict.cl",{dtType:"Manufacturer"},initManufacturer);
+		//ajaxCall("/OMS/getMain.cl","",initMain);
+		ajaxCall("/OMS/getSysDict.cl",{dtType:"DeviceType"},initdeviceType);
+		//查询设备
+		ajaxCall("/OMS/queryTremStatus.cl","",initPage);
+
+
+		//查询按钮
+		$("#query").click(function(){
+			//获取查询条件
+			var termNum = $("#termNum").val();
+			var ipAddr = $("#ipAddr").val();
+			var deviceType = $("#deviceType").val();
+			var manufacturer = $("#manufacturer").val();
+
+			var v_status = $("#v_status").val();
+
+
+			var queryStr ;
+
+			var data = {};
+
+			if(termNum != "" && termNum != undefined){
+				data.termNum = termNum;
+			}
+			if(ipAddr != "" && ipAddr != undefined){
+				data.ipAddr = ipAddr;
+			}
+			if(deviceType != "" && deviceType != "#" && deviceType != undefined){
+				data.deviceType = deviceType;
+			}
+			if(manufacturer != "" && manufacturer != "#" && manufacturer != undefined){
+				data.manufacturer = manufacturer;
+			}
+
+			if(v_status != "" && v_status != "#" && v_status != undefined){
+				data.v_status = v_status;
+			}
+
+
+			//发送请求
+			ajaxCall("/OMS/queryTremStatus.cl",data,initPage);
+		})
+
+});
+
+//跳转到修改页面
+var flowPrinter= function(){
+	//alert(obj);
+	loadto("FlowPrinter.html");
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>

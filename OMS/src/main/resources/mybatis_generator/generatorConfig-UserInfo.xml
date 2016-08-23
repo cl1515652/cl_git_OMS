@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <context id="context1" >
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/oms" userId="root" password="sa" />
+    <javaModelGenerator targetPackage="com.hiaward.cl.oms.entity" targetProject="OMS" />
+    <sqlMapGenerator targetPackage="com.hiaward.cl.oms.mapper" targetProject="OMS" />
+    <javaClientGenerator targetPackage="com.hiaward.cl.oms.client" targetProject="OMS" type="XMLMAPPER" />
+    <table schema="" tableName="USER_INFO" ></table>
+    <table tableName="USER_INFO" domainObjectName="UserInfo"></table>
+  </context>
+</generatorConfiguration>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>运营管理系统-主页</title>
+	</head>
+	<link href="/OMS/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+
+	<body>
+		<div id="dBody" class="container-fluid" style="width: 1070px">
+			<!--网页头 -->
+			<div id="head" class="container-fluid" style="height: 150px;margin: 10px 10px;" >
+				<nav class="navbar navbar-default" style="height: 120px; padding: 16px;">
+				  <div class="container-fluid">
+				  	
+				  	<p class="navbar-text navbar-left">
+				  		<font style="font-size: 40px;">运管系统</font>
+				  	</p>
+				  	<p class="navbar-text navbar-right" style="margin-right: 30px">
+				  		<font id="username">系统管理员</font>&nbsp;：您好！<a href="#">退出系统</a>
+				  	</p>
+				    
+				  </div>
+				</nav>
+				
+			</div>
+			<!--网页菜单 -->
+			<div id="menu" class="col-xs-1" style=" width: 200px;height: 300px;margin: -20px 10px ;">
+				<ul class="list-group">
+				  <button type="button" class="list-group-item">
+				  	<span id="jk_s" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				  	监控模块
+				  </button>
+				  <button id="jk_1" type="button" class="list-group-item">
+				  	&nbsp;&nbsp;&nbsp;&nbsp;
+				  	全部设备
+				  </button>
+				  
+				  <button type="button" class="list-group-item">
+				  	<span id="bb_s" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				  	报表模块
+				  </button>
+				  <button id="bb_1" type="button" class="list-group-item">
+				  	&nbsp;&nbsp;&nbsp;&nbsp;
+				  	设备故障统计
+				  </button>
+				  <button id="bb_2" type="button" class="list-group-item">
+				  	&nbsp;&nbsp;&nbsp;&nbsp;
+				  	交易信息统计
+				  </button>
+				  <button type="button" class="list-group-item">
+				  	<span id="gl_s" class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				  	管理模块
+				  </button>
+				  <button id="gl_1" type="button" class="list-group-item">
+				  	&nbsp;&nbsp;&nbsp;&nbsp;
+				  	用户管理
+				  </button>
+				  <button id="gl_2" type="button" class="list-group-item">
+				  	&nbsp;&nbsp;&nbsp;&nbsp;
+				  	设备管理
+				  </button>
+				  
+				</ul>
+			</div>
+			
+			<!--网页主体 -->
+			<div id="body_man" class="col-xs-2" style="width:800px;height: 300px;margin: -20px 10px;">
+				<div id="jyjk" class="jumbotron" style="height: 200px;">
+					<div style="margin-top: -30px;margin-left: -30px;">
+						<font style="font-size: 30px; font-family:'微软雅黑';color: #AF4F4F;">今日累计交易笔数</font>
+					</div>
+					<div  class="jumbotron" style="background-color: #204D74; height: 110px;width: auto;margin-top:10px ;">
+						<div style="margin-top: -43px;" >
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+							<img src="/OMS/img/0_.png" style="height: 100px;width: 50px;" />
+						</div>
+					
+					</div>
+				</div>
+				<div id="sb" class="jumbotron" style="height: 160px;color: #FFFFFF;font-size:25px ;">
+					<div  class="jumbotron" style="background-color:#47c0f5; float:left; height: 90px;width: 300px;padding-top: 0;">
+						<div>
+							<font>正常设备</font>
+						</div>
+						<div style="margin-left:120px;">
+							<font id="zcsb">/</font>&nbsp;台
+						</div>
+					</div>
+					<div  class="jumbotron" style="background-color:#FC756c; float:right; height: 90px;width: 300px;padding-top: 0;">
+						<div>
+							<font>异常设备</font>
+						</div>
+						<div style="margin-left:120px;">
+							<font id="gzsb">/</font>&nbsp;台
+						</div>
+					</div>
+				</div>
+		</div>
+		</div>
+	</body>
+    <!-- Bootstrap core CSS -->
+    <script src="/OMS/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    
+		$(function(){
+			
+			var initUser = function(rst){
+				
+				//加载用户角色信息
+				rst = $.parseJSON(rst)
+				var username = rst.username;
+				var userrole = rst.userrole;
+				
+				$("#username").text(username);
+				
+				if("1" == userrole){
+					$("#bb_s").parent().remove();
+					$("#bb_1").remove();
+					$("#bb_2").remove();
+					$("#gl_s").parent().remove();
+					$("#gl_1").remove();
+					$("#gl_2").remove();
+					
+				}else if("2" == userrole){
+					$("#jk_s").parent().remove();
+					$("#jk_1").remove();
+					$("#gl_s").parent().remove();
+					$("#gl_1").remove();
+					$("#gl_2").remove();
+					
+				}
+				
+			}
+			
+			var initMain = function(rst){
+				
+				//console.log(rst) //{"gzsb":"0","jys":"0","zcsb":"0"}
+				//rst = $.parseJSON(rst);
+				var jys = rst.jys;
+				var gzsb = rst.gzsb;
+				var zcsb = rst.zcsb;
+				
+				$("#zcsb").text(zcsb);
+				$("#gzsb").text(gzsb);
+			}
+			
+			$("#jk_s").click(function(){
+				var arr_ = new Array();
+				arr_.push($("#jk_s"));
+				arr_.push($("#jk_1"));
+				menu_fun_1(arr_);
+			});
+			
+			$("#bb_s").click(function(){
+				var arr_ = new Array();
+				arr_.push($("#bb_s"));
+				arr_.push($("#bb_1"));
+				arr_.push($("#bb_2"));
+				menu_fun_1(arr_);
+			});
+			
+			$("#gl_s").click(function(){
+				var arr_ = new Array();
+				arr_.push($("#gl_s"));
+				arr_.push($("#gl_1"));
+				arr_.push($("#gl_2"));
+				menu_fun_1(arr_);
+			});
+			
+			
+			var menu_fun_1 = function(arr_){
+				var v = arr_[0].attr("class");
+				var isshow;
+				if("glyphicon glyphicon-minus" != v){
+					isshow = true;
+					arr_[0].attr("class","glyphicon glyphicon-minus");
+				}else{
+					isshow = false;
+					arr_[0].attr("class","glyphicon glyphicon-plus");
+				}
+				
+				for(var i=1;i<arr_.length;i++){
+					if(isshow){
+						arr_[i].show();
+					}else{
+						arr_[i].hide();
+					}
+				}
+			};
+			
+
+				var ajaxCall = function(url,data,call){
+				$.ajax({
+					type:"post",
+					url:url,
+					data: data,
+					scriptCharset: 'utf-8',
+                	success: function(rst){
+                    	call(rst);
+                	},
+                	dataType: "json"
+             });
+			};
+			
+			ajaxCall("/OMS/getLoginInfo.cl","",initUser);
+			ajaxCall("/OMS/getMain.cl","",initMain);
+			
+			
+			
+			//var sh;
+			//sh=setInterval(show,1000);
+			//clearInterval(sh);
+			//
+			//
+			
+			var reflaseMain = function(){
+				ajaxCall("/OMS/getMain.cl","",initMain);
+			}
+			
+			var si = setInterval(reflaseMain,5000);//秒钟刷新一次
+			
+			
+			
+		});
+	</script>
+</html>

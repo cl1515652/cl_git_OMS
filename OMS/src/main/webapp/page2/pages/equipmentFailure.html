@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>equipment failure</title>
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<link rel="stylesheet" type="text/css" href="/OMS/css/jquery.datetimepicker.css">
+
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+<script type="text/javascript" src="/OMS/js/jquery.datetimepicker.full.min.js"></script>
+<script type="text/javascript" src="/OMS/js/jquery.datetimepicker.full.min.js"></script>
+
+</head>
+
+<body>
+<div class="rightMain">
+	<div class="shangjiemianSI" >
+        <div class="biaotilan">
+                 <p>设备故障统计</p>
+         </div>
+        <div class="guzhangtijiao">
+        	<p>
+              <a>统计日期：</a>
+              <input class="riqikuang" type="text" id="start_time" name="日期" value="2016-07-01 00:00:00"  />至
+              <input class="riqikuang" type="text" id="end_time" name="日期" value="2016-07-28 00:00:00" / >
+              <input class="tijiao" id="query" type="button" value="提交"/>
+            </p>
+         </div>
+
+    </div>
+</div>
+
+
+<div class="rightMain">
+    <div class="shangjiemianSI">
+        <div class="biaotilan">
+              <p>查询结果</p>
+         </div>
+            <div class="chaxunbiaoge">
+                <p>统计周期：<span id="start_time_show">2016-07-01 00:00:00</span>&nbsp; 至 &nbsp;<span id="end_time_show">2016-07-28 00:00:00</span></p>
+                <table id="term"  cellpadding="0" cellspacing="0">
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+$(function(){
+	//queryErrorTerm
+	var ajaxCall = function(url,data,call){
+		$.ajax({
+			type:"post",
+			url:url,
+			data: data,
+			scriptCharset: 'utf-8',
+        	success: function(rst){
+            	call(rst);
+        	},
+        	dataType: "json"
+	     });
+		};
+
+
+		//查询设备
+		var initTerm = function(rst){
+			var terms = $.parseJSON(rst);
+
+			//清空加载页头
+			$("#term").empty();
+			$("#term").append($("<thead>		"+
+	        "    <tr>							"+
+	        "        <td height='40px'>序号</td>"+
+	        "        <td>设备编号</td>			"+
+	        "        <td>IP地址</td>			"+
+	        "        <td>厂商</td>				"+
+	        "        <td>设备类型</td>			"+
+	        "        <td>故障次数</td>			"+
+	        "        <td>累计时间(min)</td>		"+
+	        "    </tr>							"+
+	        " </thead>							"));
+
+			//加载数据
+			for(var t in terms){
+
+
+				//{\"deviceType_name\":\"取款机\",\"Manufacturer_name\":\"NCR\",\"deviceType\":1,\"ipAddr\":\"10.0.0.123\",\"manufacturer\":1,\"tellerNum\":\"123\",\"termId\":1,\"termIndex\":\"123\",\"termNum\":\"01\"
+				var termId = terms[t].termId?terms[t].termId:"";
+				var termNum = terms[t].termNum?terms[t].termNum:"";
+				var ipAddr = terms[t].ipAddr?terms[t].ipAddr:"";
+				var tellerNum = terms[t].tellerNum?terms[t].tellerNum:"";
+				var Manufacturer_name = terms[t].Manufacturer_name?terms[t].Manufacturer_name:"";
+				var DeviceType_name = terms[t].DeviceType_name?terms[t].DeviceType_name:"";
+				var size = terms[t].size?terms[t].size:"暂无";
+				var sum_time = terms[t].sum_time?terms[t].sum_time+"":"暂无";
+
+				if(sum_time != "暂无"){
+					sum_time = sum_time.substr(0,sum_time.indexOf("."));
+				}
+				var ttd = $("<tbody>    												"+
+				           "         <tr>												"+
+				           "         <td height=\"40px\"><span>"+(parseInt(t)+1)+"</span></td>	"+
+				           "         <td><span>"+termNum+"</span></td>					"+
+				           "         <td><span>"+ipAddr+"</span></td>					"+
+				           "         <td><span>"+Manufacturer_name+"</span></td>		"+
+				           "         <td><span>"+DeviceType_name+"</span></td>			"+
+				           "         <td><span>"+size+"</span></td>		"+
+				           "         <td><span>"+sum_time+"</span></td>			"+
+				           "     </tr>													"+
+				           " </tbody>");
+				$("#term").append(ttd);
+
+				$("#start_time_show").text($("#start_time").val());
+				$("#end_time_show").text($("#end_time").val());
+			}
+
+		}
+
+		var start_time = $("#start_time").val();
+		var end_time = $("#end_time").val();
+
+		var date = {};
+		date.start_time = start_time;
+		date.end_time = end_time;
+
+
+		//initTerm
+		ajaxCall("/OMS/queryErrorTerm.cl",date,initTerm);
+
+
+		$("#query").click(function(){
+			var start_time = $("#start_time").val();
+			var end_time = $("#end_time").val();
+
+			var date = {};
+			date.start_time = start_time;
+			date.end_time = end_time;
+
+			ajaxCall("/OMS/queryErrorTerm.cl",date,initTerm);
+		});
+
+});
+
+//加载时间控件
+$.datetimepicker.setLocale('ch');
+$('#start_time').datetimepicker({
+	dayOfWeekStart : 1,
+	lang:'ch',
+	disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+	startDate:	new Date()
+	});
+$('#end_time').datetimepicker({
+	dayOfWeekStart : 1,
+	lang:'ch',
+	disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+	startDate:	new Date()
+	});
+d
+</script>
+</body>
+</html>

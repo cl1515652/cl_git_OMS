@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>用户登录</title>
+        <link href="/OMS/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style type="text/css">
+            .dingwei{
+            padding:10px;
+            width:220px;
+            height:220px;
+            display:block; 
+            position: absolute;
+            top:50%;
+            left:50%;
+            margin-left:-110px;
+            margin-top:-110px;
+            z-index: 99}
+        </style>
+    </head>
+    <script src="/OMS/js/jquery-3.0.0.js" type="text/javascript" ></script>
+    <script type="text/javascript" >
+        $(function(){
+            
+            $('[data-toggle="popover"]').popover();
+            
+            //console.log("111");
+            $("#login").click(function(){
+                var username = $("#username").val();
+                var password = $("#password").val();
+                
+                //console.log(username);
+                //console.log(password);
+                
+                
+                if(username === "" || password === ""){
+                    alert("用户名或者密码不能为空");
+                }else if(username.length > 20 || password.length > 20){
+                    alert("用户名或者密码不能超过20位");
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "login.cl",
+                        data: {"userId":username,"password":password},
+                        success: function(rst){
+
+                            	if("true" == rst.login){
+                            		//alert("登录成功！欢迎您"+username);
+                            		console.log("登录成功！欢迎您"+username);
+                            		console.log(rst);
+                            		location.href = "toMain.cl";
+                            		//$("body").load("toMain.cl")
+                            		
+                            		
+                            	}else{
+                            		//alert("用户名或密码错误");
+                            		console.log("用户名或密码错误");
+                            		$("#username").popover("show");
+                            		
+                            	}
+
+                        },
+                        dataType: "json"
+                      });
+                }
+            });
+        });
+    </script>
+    <body>
+        </br>
+        <div class="jumbotron" style="align-content: center ">
+            
+            <div style="width: 400px; align-content: center;margin:0 auto;" >
+                <div style="align-content: center;margin:0 auto;">
+                    <h1>用户登录</h1>
+                </div>
+                </br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">用户名</span>
+                    <input id="username" type="text" class="form-control" placeholder="请输入用户名" aria-describedby="sizing-addon2" data-placement="top" data-content="用户名或者密码错误.">
+                </div>
+                </br>
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">密&nbsp;&nbsp;码</span>
+                    <input id="password" type="password" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon2">
+                </div>
+                </br>
+                <p><a class="btn btn-primary btn-lg" id="login" href="#" role="button">登录</a></p>
+            </div>
+        </div>
+        
+    </body>
+    
+    <!--    引入bootstrap-->
+    <!-- Bootstrap core CSS -->
+    <script src="/OMS/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+</html>

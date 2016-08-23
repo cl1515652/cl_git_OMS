@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/toubu.css">
+<title>监控首页-首页</title>
+<script type="text/javascript"  src="../js/png.js"></script>
+<script type="text/javascript" src="/OMS/js/jquery-3.0.0.js"></script>
+
+<script type="text/javascript">
+
+	window.onload = function() {
+		var frameser = document.getElementById("frameser");
+
+		if (document.getElementById("allmerchine"))
+			document.getElementById("allmerchine").onclick = function() {
+				//frameser.src = 'AllEquipment.html?'+Math.random();
+				$("#right_main").load("AllEquipment.html");
+			}
+		if (document.getElementById("eqFailure"))
+			document.getElementById("eqFailure").onclick = function() {
+				//frameser.src = 'equipmentFailure.html?'+Math.random();
+				$("#right_main").load("equipmentFailure.html");
+			}
+		if (document.getElementById("Information"))
+			document.getElementById("Information").onclick = function() {
+				//frameser.src = 'TransactionInformation.html?'+Math.random();
+				$("#right_main").load("TransactionInformation.html");
+			}
+		if (document.getElementById("UserModule"))
+			document.getElementById("UserModule").onclick = function() {
+			//	frameser.src = 'UserModule.html?'+Math.random();
+				$("#right_main").load("UserModule.html");
+			}
+			
+		if (document.getElementById("DeviceModule"))
+			document.getElementById("DeviceModule").onclick = function() {
+				//frameser.src = 'DeviceModule.html?'+Math.random();
+				$("#right_main").load("DeviceModule.html");
+			}
+		if (document.getElementById("userManagement"))
+			document.getElementById("userManagement").onclick = function() {
+				//frameser.src = 'userManagement.html?'
+				$("#right_main").load("userManagement.html");
+			}
+		$("#jkmk").click(function(){
+			$("#right_main").load("MonitorHome.html");
+		})
+		
+		$("#right_main").load("MonitorHome.html");
+	}
+	
+</script>
+</head>
+
+<body>
+<div class="wrap">
+<div class="headBG">
+          <div class="logo">
+                <img src="/OMS/page2/images/logo.png"></img>
+          </div>
+          <div class="inline"></div>
+          <div class="zhuxiao logoTitle">运管系统</div>
+          <div class="yonghuicon" >
+                <img src="/OMS/page2/images/zhuxiao.png"></img>
+                <div class="zhuxiao">退出</div>
+          </div>       
+            
+          <div class="yonghuicon">
+              <img src="/OMS/page2/images/yonghu.png"></img>
+              <div class="zhuxiao">
+              <font id="username1">用户</font>
+              ，欢迎使用</div>
+          </div>   
+</div>
+     
+
+
+
+    
+<div id="Monitorhome" class="rightContent" style="display:;">
+<div class="mainBG" >
+	<div class="xuanzelan">
+            <div class="touxiangBG">
+                <img src="/OMS/page2/images/master.png"> </img>
+                <p>管理员：
+                <font id="username">刘斩仙</font>
+                
+                
+                </p>
+            </div>
+            <div class="zhucaidan">
+            	<div>
+                <img src="/OMS/page2/images/jiankong-1.png"></img>
+                <p id="jkmk">监控模块</p><span>+</span>
+                </div>
+                <div class="zicaidan">
+                    <h5 id="allmerchine">全部设备</h5>
+                </div>
+            </div>
+            <div class="zhucaidan">
+            	<div>
+                <img src="/OMS/page2/images/baobiao.png"></img>
+                <p>报表模块</p><span>+</span>
+                </div>
+                <div class="zicaidan">
+                    <h5 id="eqFailure">设备故障统计</h5>
+                    <h5 id="Information">交易信息统计</h5>
+                </div>
+            </div>
+            <div class="zhucaidan">
+            	<div>
+                <img src="/OMS/page2/images/guanli.png"></img>
+                <p>管理模块</p><span>+</span>
+                </div>
+                <div class="zicaidan">
+                    <h5 id="UserModule">用户管理</h5>
+                    <h5 id="DeviceModule">设备管理</h5>
+                </div>
+        	</div>    
+    </div>
+</div>
+<div id="right_main"></div>
+		
+</div>
+  
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	
+	var initUser = function(rst){
+		
+		//加载用户角色信息
+		rst = $.parseJSON(rst);
+		var username = rst.username;
+		var userrole = rst.userrole;
+		
+		$("#username").text(username);
+		$("#username1").text(username);
+		
+		if("1" == userrole){
+			$("#bb_s").parent().remove();
+			$("#bb_1").remove();
+			$("#bb_2").remove();
+			$("#gl_s").parent().remove();
+			$("#gl_1").remove();
+			$("#gl_2").remove();
+			
+		}else if("2" == userrole){
+			$("#jk_s").parent().remove();
+			$("#jk_1").remove();
+			$("#gl_s").parent().remove();
+			$("#gl_1").remove();
+			$("#gl_2").remove();
+			
+		}
+		
+	}
+	
+	var initMain = function(rst){
+		
+		var jys = rst.jys;
+		var gzsb = rst.gzsb;
+		var zcsb = rst.zcsb;
+		
+		jys = 12345+"";
+		
+		
+		$("#zcsb").text(zcsb);
+		$("#ycsb").text(gzsb);
+		
+		for(var i = 1 ; i<=jys.length ; i++){
+			$("#mun_"+i).text(jys[i-1]);
+		}
+		
+	}
+	
+	
+	
+	$("#jk_s").click(function(){
+		var arr_ = new Array();
+		arr_.push($("#jk_s"));
+		arr_.push($("#jk_1"));
+		menu_fun_1(arr_);
+	});
+	
+	$("#bb_s").click(function(){
+		var arr_ = new Array();
+		arr_.push($("#bb_s"));
+		arr_.push($("#bb_1"));
+		arr_.push($("#bb_2"));
+		menu_fun_1(arr_);
+	});
+	
+	$("#gl_s").click(function(){
+		var arr_ = new Array();
+		arr_.push($("#gl_s"));
+		arr_.push($("#gl_1"));
+		arr_.push($("#gl_2"));
+		menu_fun_1(arr_);
+	});
+	
+	
+	var menu_fun_1 = function(arr_){
+		var v = arr_[0].attr("class");
+		var isshow;
+		if("glyphicon glyphicon-minus" != v){
+			isshow = true;
+			arr_[0].attr("class","glyphicon glyphicon-minus");
+		}else{
+			isshow = false;
+			arr_[0].attr("class","glyphicon glyphicon-plus");
+		}
+		
+		for(var i=1;i<arr_.length;i++){
+			if(isshow){
+				arr_[i].show();
+			}else{
+				arr_[i].hide();
+			}
+		}
+	};
+	
+
+		var ajaxCall = function(url,data,call){
+		$.ajax({
+			type:"post",
+			url:url,
+			data: data,
+			scriptCharset: 'utf-8',
+        	success: function(rst){
+            	call(rst);
+        	},
+        	dataType: "json"
+     });
+	};
+	
+	ajaxCall("/OMS/getLoginInfo.cl","",initUser);
+	//ajaxCall("/OMS/getMain.cl","",initMain);
+	
+	
+	
+	//var sh;
+	//sh=setInterval(show,1000);
+	//clearInterval(sh);
+	//
+	//
+	
+	var reflaseMain = function(){
+		ajaxCall("/OMS/getMain.cl","",initMain);
+	}
+	
+	//var si = setInterval(reflaseMain,5000);//秒钟刷新一次	
+});
+
+var loadto = function(page){
+	$("#right_main").load(page);
+}
+var termId ;
+
+var getTermId = function(){
+	
+	return termId;
+}
+
+var setTermId = function(str){
+	termId = str;
+}
+
+</script>
+
+
+</html>
